@@ -1,0 +1,8 @@
+# roles/mysql/handlers/main.yml
+---
+
+- name: restart mysqld
+  systemd:
+    name: mysqld
+    state: restarted
+    daemon-reload: "yes"

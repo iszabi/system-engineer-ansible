@@ -1,0 +1,15 @@
+# Setting up hostname and etc/hosts file
+---
+- name: Set a hostname
+  hostname:
+    name: "{{ server_hostname }}"
+
+- name: Replace `/etc/hosts` file
+  template:
+    src:  hosts.j2
+    dest: /etc/hosts
+    owner: root
+    mode: 0644
+  become: yes
+
+

@@ -1,0 +1,8 @@
+# Installing PHP modules
+---
+- name: Install PHP Extensions
+  dnf: 
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  loop: "{{ php_modules }}"

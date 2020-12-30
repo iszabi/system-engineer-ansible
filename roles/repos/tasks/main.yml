@@ -1,0 +1,73 @@
+# Enable required repositories on CentOS 8
+---
+# Enable EPEL repo on CentOS 8
+- name: Check if EPEL repo is already configured.
+  stat:
+    path: "{{ epel_repofile_path }}"
+  register: epel_repofile_result
+
+- name: Import EPEL GPG key.
+  rpm_key:
+    key: "{{ epel_repo_gpg_key_url }}"
+    state: present
+  register: result
+  until: result is succeeded
+  retries: 5
+  delay: 10
+  when: not epel_repofile_result.stat.exists
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install EPEL repo.
+  yum:
+    name: "{{ epel_repo_url }}"
+    state: present
+  register: result
+  until: result is succeeded
+  retries: 5
+  delay: 10
+  when: not epel_repofile_result.stat.exists
+
+# Enable Remi repo for PHP 8.0 by following vendor site: https://blog.remirepo.net/post/2020/11/30/Install-PHP-8.0-on-CentOS-RHEL-or-Fedora
+- name: Install required dnf python binding
+  command: dnf install -y python3-dnf warn=no
+  changed_when: False
+
+- name: Import Remi GPG key.
+  rpm_key:
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+    state: present
+
+- name: Install PHP Remi Repository
+  dnf: 
+    name: http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+    update_cache: yes 
+    state: latest
+
+- name: Install yum-utils
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - yum-utils
+
+- name: Enable PHP Remi Repository
+  shell: |
+    dnf module reset php -y
+    dnf module enable -y php:remi-{{ php_version }}
+    dnf update -y
+  args:
+      warn: false
+
+# Enable PowerTools repo for eLinks 
+- name: Check if CentOS PowerTools repo enabled
+  shell: /usr/bin/dnf -q repolist --enabled PowerTools && echo disabled || echo enabled
+  args:
+    warn: false
+  register: powertools
+
+- name: Enable CentOS PowerTools repository for epel
+  command: dnf config-manager --set-enabled powertools
+  when: powertools.stdout == "disabled"
+  args:
+    warn: false
