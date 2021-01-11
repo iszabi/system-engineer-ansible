@@ -135,6 +135,6 @@ Result is :  Alma.com served successfully
 - There were some outdated extension used in PHP script what I've updated for newest PHP version.
 - mysql_connection, mysqli_close extensions has been deprecated in PHP 5.5.0, I've used mysqli_connection in my PHP scripts for PHP 8. More info: [mysqli_close](https://www.php.net/manual/en/mysqli.close.php), [mysqli_connection](https://www.php.net/manual/en/function.mysql-connect.php)
 - I have created a database for alma.com PHP script by treated separately from the root user
-- All variables can be found in /var/default.yml 
+- All variables can be found in /vars/default.yml 
 
 Created by Szabolcs Illes (szabolcs.illes@yahoo.com) / 30.12.2020
