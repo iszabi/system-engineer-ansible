@@ -1,0 +1,42 @@
+# Main settings for alma.com site
+---
+- name: Set ownership
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    recurse: yes
+    owner: apache
+    group: apache
+
+- name: Set up php script
+  copy:
+    src: "files/index.php"
+    dest: "/var/www/{{ http_host }}/docroot"
+    owner: apache
+    group: apache
+    mode: 0644
+
+- name: Replace mySQL DBname
+  replace:
+    path: "/var/www/{{ http_host }}/docroot/index.php"
+    regexp: "dbname"
+    replace: "{{mysql_db}}"
+
+- name: Replace mySQL DB user
+  replace:
+    path: "/var/www/{{ http_host }}/docroot/index.php"
+    regexp: "dbuser"
+    replace: "{{mysql_user}}"
+
+- name: Replace mySQL DB user
+  replace:
+    path: "/var/www/{{ http_host }}/docroot/index.php"
+    regexp: "dbpassword"
+    replace: "{{mysql_password}}"
+
+
+
+- name: Install eLinks local text browser for site validating
+  dnf:
+    name: links
+    state: latest
