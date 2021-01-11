@@ -35,13 +35,13 @@ After cloned emarsys repository into your Ansible control node, prepare target h
 
 
 ```
-$ cd ~/emarsys/alma.com
+$ cd ~/emarsys/alma_dot_com
 $ ansible-playbook playbook.yml -i host
 ```
 ## Folder structure for Ansible Playbook
 
 ```
-$ tree /home/ansible/emarsys/alma.com
+$ tree /home/ansible/emarsys/alma_dot_com
 ├── ansible.cfg
 ├── files
 │   ├── httpd.conf
