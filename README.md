@@ -1,4 +1,4 @@
-# System Engineer – Homework
+# System Engineer – Automation with Ansible
 ## Description
 
 It is a configuration management solution that configures linux-server01, based on what is shown in the image
